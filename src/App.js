@@ -5,12 +5,14 @@ import Plotly from 'plotly.js-dist'
 
 const APIURL = "https://gateway.thegraph.com/api/d3dd46dedd6bd87177046327502db49a/subgraphs/id/D7azkFFPFT5H8i32ApXLr34UQyBfxDAfKoCEK4M832M6"
 
+
+// exclude 0 amounts and amounts higher than 5 milion
 const query = `
   query {
-    highestSwaps: swaps(first: 1000, orderDirection: desc, orderBy: amountUSD) {
+    highestSwaps: swaps(where: {amountUSD_lt: "5000000"}, first: 1000, orderDirection: desc, orderBy: amountUSD) {
       ...DataOnSwap
     }
-    lowestSwaps: swaps(first: 1000, orderDirection: asc, orderBy: amountUSD) {
+    lowestSwaps: swaps(where: {amountUSD_gt: "0"}, first: 1000, orderDirection: asc, orderBy: amountUSD) {
       ...DataOnSwap
     }
   }
